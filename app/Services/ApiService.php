@@ -13,7 +13,7 @@ class ApiService {
 
     // Anilhas Cadastradas
     public function listarAnilhasCadastradas() {
-        $response = Http::get("{$this->baseUrl}/listarAnilhasCadastradas");
+        $response = Http::get("{$this->baseUrl}/listarAnilhasCadastradasEntrada");
         return $response->json();
     }
 
@@ -62,9 +62,17 @@ class ApiService {
     }
 
     // HORTA API
-    public function listarHortaEmJson(){
+    public function listarHortaEmJson() {
         $response = Http::get("{$this->baseUrl}/listarHorta");
-        return $response->json();
+        $dados = $response->json();
+        
+        if (isset($dados['data']) && is_array($dados['data'])) {
+            $dadosLimitados = array_slice($dados['data'], 0, 10);
+        } else {
+            $dadosLimitados = [];
+        }
+        
+        return $dadosLimitados;
     }
 
     // MAC API

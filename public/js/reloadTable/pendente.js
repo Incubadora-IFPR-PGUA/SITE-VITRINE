@@ -26,6 +26,7 @@ function atualizaTabela(data) {
     theadBody.innerHTML = `
         <th class="py-2 text-center px-4 w-5/12">Nome</th>
         <th class="py-2 text-center px-4 w-2/12">Anilha</th>
+        <th class="py-2 text-center px-4 w-2/12">Data/Hora - Solicitação</th>
     `;
 
     data.forEach(function(item) {
@@ -38,6 +39,7 @@ function atualizaTabela(data) {
                 onmouseout="this.style.backgroundColor='';">
                 <td class="py-2 px-4 border-b border-gray-300 text-center">${item.nome}</td>
                 <td class="py-2 px-4 border-b border-gray-300 text-center">${item.numero_anilha}</td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">${item ? new Date(item.updated_at).toLocaleString() : 'N/A'}</td>
             </tr>`;
 
         tableBody.innerHTML += row;
