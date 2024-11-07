@@ -89,9 +89,9 @@
                     <x-slot name="trigger">
                         <button class="d-flex align-items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
                             <div class="d-flex align-items-center me-2">
-                                <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px;">
+                                <img src="" alt="Avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px;">
                             </div>
-                            <div>{{ Auth::user()->name }}</div>
+                            <div>Em teste</div>
                         </button>
                     </x-slot>
 
@@ -133,10 +133,10 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="d-flex align-items-center px-4">
-                <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="img-fluid rounded-circle me-3" style="width: 40px; height: 40px;">
+                <img src="" alt="Avatar" class="img-fluid rounded-circle me-3" style="width: 40px; height: 40px;">
                 <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">Em teste</div>
+                    <div class="font-medium text-sm text-gray-500">Em teste</div>
                 </div>
             </div>
 

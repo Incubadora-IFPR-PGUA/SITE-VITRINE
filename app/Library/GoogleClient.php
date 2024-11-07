@@ -8,7 +8,7 @@ use Google\Service\Oauth2\Userinfo;
 
 class GoogleClient {
     private Userinfo $data;
-    public readonly Client $client;
+    private Client $client;
 
     public function __construct() {
         $this->client = new Client();
@@ -19,21 +19,24 @@ class GoogleClient {
         $this->client->setHttpClient($guzzleClient);
         $this->client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
         $this->client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-        $this->client->setRedirectUri('http://localhost:8000/login');
+        $this->client->setRedirectUri('http://85.31.63.241:8084/login');
         $this->client->addScope('email');
         $this->client->addScope('profile');
     }
 
     public function authenticated() {
-        if (isset($_GET['code'])) {
-            $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
-            $this->client->setAccessToken($token['access_token']);
-            $google_service = new ServiceOauth2($this->client);
-            $this->data = $google_service->userinfo->get();
+        // if (isset($_GET['code'])) {
+        //     $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
+        //     $this->client->setAccessToken($token['access_token']);
+        //     $google_service = new ServiceOauth2($this->client);
+        //     $this->data = $google_service->userinfo->get();
 
-            return true;
-        }
-        return false;
+        //     return true;
+        // }
+        // return false;
+        // Redireciona diretamente para a página desejada (sem autenticação)
+        header('Location: http://127.0.0.1:8000/home');
+        exit();
     }
 
     public function getData() {
