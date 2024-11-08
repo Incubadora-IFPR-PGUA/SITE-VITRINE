@@ -14,11 +14,13 @@ class SmartHarpiaController extends Controller {
     }
 
     public function index() {
+        // $this->authorize('hasFullPermission', AnilhaRegistro::class);
         $data = $this->apiService->getMacAddressInJson();
         return view('macaddress.index');
     }
 
     public function macaddressReload() {
+        // $this->authorize('hasFullPermission', AnilhaRegistro::class);
         $data = $this->apiService->getMacAddressInJson();
         return response()->json($data);
     }

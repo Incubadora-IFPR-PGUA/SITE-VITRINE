@@ -16,18 +16,19 @@ class AnilhaPendenteController extends Controller {
     }
 
     public function index() {
-        $this->authorize('hasFullPermission', AnilhaPendente::class);
+        // $this->authorize('hasFullPermission', AnilhaPendente::class);
         $data = $this->apiService->listarAnilhasPendentes();  
         return view('pendente.index', compact('data'));
     }
 
     public function reload() {
-        $this->authorize('hasFullPermission', AnilhaPendente::class);
+        // $this->authorize('hasFullPermission', AnilhaPendente::class);
         $data = $this->apiService->listarAnilhasPendentes();
         return response()->json($data); 
     }
 
     public function aceitarPendente($id) {
+        // $this->authorize('hasFullPermission', AnilhaRegistro::class);
         $name = request()->input('name');
         $data = $this->apiService->aceitarPendente($id, $name);
         if (isset($data['message'])) {

@@ -81,6 +81,31 @@
                     @endcan
                 @endif
                 </div>
+
+                <!-- Apagar depois isso -->
+                <div class="nav-links">
+                @if(request()->routeIs('pendente.index') || request()->routeIs('cadastro.index') || request()->routeIs('registro.index'))
+                    <x-nav-link :href="route('cadastro.index')" :active="request()->routeIs('cadastro.index')" class="nav-link">
+                        {{ __('Cadastro') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('pendente.index')" :active="request()->routeIs('pendente.index')" class="nav-link">
+                        {{ __('Pendente') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('registro.index')" :active="request()->routeIs('registro.index')" class="nav-link">
+                        {{ __('Registro') }}
+                    </x-nav-link>
+                @else
+                    <x-nav-link :href="route('registro.index')" class="nav-link">
+                        {{ __('Smart-Anilhas') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('smarthorta')" class="nav-link">
+                        {{ __('Smart-Horta') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('macaddress')" class="nav-link">
+                        {{ __('MacAddress') }}
+                    </x-nav-link>
+                @endif
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -89,9 +114,9 @@
                     <x-slot name="trigger">
                         <button class="d-flex align-items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
                             <div class="d-flex align-items-center me-2">
-                                <img src="" alt="Avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px;">
+                                <img src="{{ asset('profile.jpeg') }}" alt="Avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px;">
                             </div>
-                            <div>Em teste</div>
+                            <div>Visitante</div>
                         </button>
                     </x-slot>
 
@@ -133,10 +158,10 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="d-flex align-items-center px-4">
-                <img src="" alt="Avatar" class="img-fluid rounded-circle me-3" style="width: 40px; height: 40px;">
+                <img src="{{ asset('profile.jpeg') }}" alt="Avatar" class="img-fluid rounded-circle me-3" style="width: 40px; height: 40px;">
                 <div>
-                    <div class="font-medium text-base text-gray-800">Em teste</div>
-                    <div class="font-medium text-sm text-gray-500">Em teste</div>
+                    <div class="font-medium text-base text-gray-800">Visitante</div>
+                    <div class="font-medium text-sm text-gray-500">visitante@email.com</div>
                 </div>
             </div>
 

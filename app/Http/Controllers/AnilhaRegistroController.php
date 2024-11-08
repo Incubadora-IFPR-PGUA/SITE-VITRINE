@@ -15,13 +15,13 @@ class AnilhaRegistroController extends Controller {
     }
 
     public function index() {
-        $this->authorize('hasFullPermission', AnilhaRegistro::class);
+        // $this->authorize('hasFullPermission', AnilhaRegistro::class);
         $data = $this->apiService->listarAnilhasCadastradas();    
         return view('registro.index', compact('data'));
     }
 
     public function reload() {
-        $this->authorize('hasFullPermission', AnilhaRegistro::class);
+        // $this->authorize('hasFullPermission', AnilhaRegistro::class);
         $data = $this->apiService->listarAnilhasCadastradas();
         return response()->json($data); 
     }

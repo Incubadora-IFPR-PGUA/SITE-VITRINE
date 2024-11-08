@@ -34,7 +34,6 @@ class GoogleClient {
         //     return true;
         // }
         // return false;
-        // Redireciona diretamente para a página desejada (sem autenticação)
         header('Location: http://127.0.0.1:8000/home');
         exit();
     }
