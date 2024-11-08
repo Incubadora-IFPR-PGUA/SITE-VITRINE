@@ -34,7 +34,7 @@ class GoogleClient {
         //     return true;
         // }
         // return false;
-        header('Location: http://127.0.0.1:8000/home');
+        header('Location: http://85.31.63.241:8084/home');
         exit();
     }
 
