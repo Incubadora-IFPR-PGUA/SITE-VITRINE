@@ -75,6 +75,12 @@ class ApiService {
         return $dadosLimitados;
     }
 
+    // Phmetro
+    public function listarPhmetroEmJson() {
+        $response = Http::get("{$this->baseUrl}/listarPh");
+        return $response->json();
+    }
+
     // MAC API
     public function getMacAddressInJson(){
         $response = Http::get("{$this->baseUrl}/listarMacsCapturados");

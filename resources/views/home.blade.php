@@ -53,6 +53,18 @@
                 </a>
             </div>
 
+            <!-- Card 4 -->
+            <div class="col-md-4">
+                <a href="{{ url('/phmetro') }}" class="text-decoration-none">
+                    <div class="card card-hover">
+                        <img src="https://quimicaresponde.proec.ufabc.edu.br/wp-content/uploads/2016/01/tratamento-ph-agua.jpg" class="card-img-top custom-img" alt="Smart-Harpia">
+                        <div class="card-body text-center">
+                            <h5 class="card-title custom-title">PHMETRO</h5>
+                            <p class="card-text custom-description">Tem como objetivo a monitoração do ph em locais especificos onde haja corrente de água potável!</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 

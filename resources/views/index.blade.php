@@ -15,6 +15,9 @@
         @if(request()->routeIs('registro.index'))
             Registros de anilhas já cadastradas!
         @endif
+        @if(request()->routeIs('phmetro.index'))
+            Registros de anilhas já cadastradas!
+        @endif
     </x-slot>
     @yield('conteudo')
 </x-app-layout>

@@ -96,13 +96,16 @@
                     </x-nav-link>
                 @else
                     <x-nav-link :href="route('registro.index')" class="nav-link">
-                        {{ __('Smart-Anilhas') }}
+                        {{ __('ANILHAS') }}
                     </x-nav-link>
                     <x-nav-link :href="route('smarthorta')" class="nav-link">
-                        {{ __('Smart-Horta') }}
+                        {{ __('HORTA') }}
                     </x-nav-link>
                     <x-nav-link :href="route('macaddress')" class="nav-link">
-                        {{ __('MacAddress') }}
+                        {{ __('MACADDRESS') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('phmetro')" class="nav-link">
+                        {{ __('PHMETRO') }}
                     </x-nav-link>
                 @endif
                 </div>
