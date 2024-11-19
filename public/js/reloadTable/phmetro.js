@@ -21,6 +21,7 @@ function atualizaTabela(data) {
                     <td class="py-2 px-4 border-b">${dataFormatada}</td>
                     <td class="py-2 px-4 border-b">${item.ph}</td>
                     <td class="py-2 px-4 border-b">${item.escala}</td>
+                    <td class="py-2 px-4 border-b">${item.id_fk_esp_macAdress}</td>
                 </tr>
             `;
             tbody.innerHTML += row;

@@ -12,6 +12,7 @@
             <th class="py-2 px-4 border-b relative" style="cursor: pointer">Data/Hora</th>
             <th class="py-2 px-4 border-b relative" style="cursor: pointer">PH</th>
             <th class="py-2 px-4 border-b relative" style="cursor: pointer">Escala</th>
+            <th class="py-2 px-4 border-b relative" style="cursor: pointer">Localização</th>
           </tr>
         </thead>
         <tbody id="tableData"></tbody>
