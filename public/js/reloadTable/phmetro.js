@@ -21,7 +21,7 @@ function atualizaTabela(data) {
                     <td class="py-2 px-4 border-b">${dataFormatada}</td>
                     <td class="py-2 px-4 border-b">${item.ph}</td>
                     <td class="py-2 px-4 border-b">${item.escala}</td>
-                    <td class="py-2 px-1 border-b">${item.id_fk_esp_macAdress}</td>
+                    <td class="py-2 px-1 border-b">${item.macAddress.nome}</td>
                 </tr>
             `;
             tbody.innerHTML += row;
@@ -36,6 +36,7 @@ function recarregarTabela() {
     .then(response => response.json())
     .then(data => {
         if (Array.isArray(data)) {
+            console.log(data)
             atualizaTabela(data);
         } else {
             console.error('Dados inválidos recebidos:', data);
