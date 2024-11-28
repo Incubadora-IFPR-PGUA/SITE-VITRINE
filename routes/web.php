@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnilhaPendenteController;
 use App\Http\Controllers\SmartHarpiaController;
+use App\Http\Controllers\PhmetroController;
 
 Route::get('/', function () {
     return view('main');
