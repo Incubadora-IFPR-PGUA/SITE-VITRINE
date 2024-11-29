@@ -99,7 +99,7 @@
 
             <!-- Paginação -->
             <div class="d-flex justify-content-center">
-                {{ $phmetros->links() }}
+                {{ $phmetros->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

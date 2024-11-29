@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ApiService;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Carbon\Carbon;
 
 class PhmetroController extends Controller {
     protected $apiService;
@@ -21,6 +22,8 @@ class PhmetroController extends Controller {
         $localizacoes = $data->pluck('macAddress.nome')->unique()->sort()->values();
         $escalas = $data->pluck('escala')->unique()->sort()->values();
 
+        //dd($filters['data']);
+
         if ($filters['ph'] ?? null) {
             $data = $data->filter(function ($phmetro) use ($filters) {
                 return strpos($phmetro['ph'], $filters['ph']) !== false;
@@ -35,7 +38,7 @@ class PhmetroController extends Controller {
     
         if ($filters['data'] ?? null) {
             $data = $data->filter(function ($phmetro) use ($filters) {
-                return Carbon::parse($phmetro['data_hora_atualizacao'])->gte(Carbon::parse($filters['data']));
+                return Carbon::parse($phmetro['data_hora_atualizacao'])->isSameDay(Carbon::parse($filters['data']));
             });
         }
 
@@ -54,7 +57,7 @@ class PhmetroController extends Controller {
             $data->count(),
             $perPage,
             $currentPage,
-            ['path' => $request->url()]
+            ['path' => $request->url(), 'query' => $request->query()]
         );
 
         return view('phmetro.index', ['phmetros' => $paginatedData, 'filters' => $filters, 'localizacoes' => $localizacoes, 'escalas' => $escalas]);
