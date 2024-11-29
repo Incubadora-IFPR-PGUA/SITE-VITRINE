@@ -56,7 +56,7 @@
             </form>
 
             <!-- Tabela -->
-            <table class="table table-bordered text-center">
+            <table class="table table-bordered text-center table-hover">
                 <thead>
                     <tr>
                         <th>
@@ -87,12 +87,55 @@
                 </thead>
                 <tbody>
                     @foreach ($phmetros as $phmetro)
-                        <tr>
+                        <tr 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#modalPhmetro{{ $loop->index }}" 
+                            style="cursor: pointer;"
+                            class="row-hover"
+                        >
                             <td>{{ Carbon::parse($phmetro['data_hora_atualizacao'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</td>
                             <td>{{ number_format(round($phmetro['ph'], 1), 1) }}</td>
                             <td>{{ $phmetro['escala']}}</td>
                             <td>{{ $phmetro['macAddress']['nome'] }}</td>
                         </tr>
+
+                        <!-- Modal para Exibir Detalhes -->
+                        <div class="modal fade" id="modalPhmetro{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Detalhes do Phmetro</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Data:</strong> {{ Carbon::parse($phmetro['data_hora_atualizacao'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
+                                        <p><strong>Ph:</strong> {{ number_format(round($phmetro['ph'], 1), 1) }}</p>
+                                        <p><strong>Escala:</strong> {{ $phmetro['escala'] }}</p>
+                                        <p><strong>ESP32:</strong> {{ $phmetro['macAddress']['nome'] }}</p>
+                                        <p><strong>Descrição:</strong> {{ $phmetro['macAddress']['descricao'] }}</p>
+                                        <strong>Localização:</strong>
+                                        @if($phmetro['macAddress']['latitude'] && $phmetro['macAddress']['longitude'])
+                                            <iframe 
+                                                class="form-control" 
+                                                id="mapFrame" 
+                                                width="100%" 
+                                                height="100%" 
+                                                style="border: 0;" 
+                                                src="https://www.google.com/maps/embed/v1/view?key={{ env('GOOGLE_MAPS_API_KEY') }}&center={{ $phmetro['macAddress']['latitude'] }},{{ $phmetro['macAddress']['longitude'] }}&zoom=15" 
+                                                allowfullscreen 
+                                                loading="lazy">
+                                            </iframe>
+                                        @else
+                                            <p>Localização inválida ou não disponível.</p>
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     @endforeach
                 </tbody>
             </table>
@@ -105,5 +148,9 @@
     </div>
 </body>
 </html>
+
+<script>
+    const GOOGLE_MAPS_API_KEY = "{{ env('GOOGLE_MAPS_API_KEY') }}";
+</script>
 
 @endsection

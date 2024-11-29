@@ -19,11 +19,12 @@ class PhmetroController extends Controller {
     public function index(Request $request) {
         $filters = $request->only(['ph', 'escala', 'data', 'localizacao']);
         $data = collect($this->apiService->listarPhmetroEmJson());
+    
+        // Extrair localizações e escalas únicas
         $localizacoes = $data->pluck('macAddress.nome')->unique()->sort()->values();
         $escalas = $data->pluck('escala')->unique()->sort()->values();
-
-        //dd($filters['data']);
-
+    
+        // Aplicar filtros
         if ($filters['ph'] ?? null) {
             $data = $data->filter(function ($phmetro) use ($filters) {
                 return strpos($phmetro['ph'], $filters['ph']) !== false;
@@ -41,13 +42,29 @@ class PhmetroController extends Controller {
                 return Carbon::parse($phmetro['data_hora_atualizacao'])->isSameDay(Carbon::parse($filters['data']));
             });
         }
-
+    
         if ($filters['localizacao'] ?? null) {
             $data = $data->filter(function ($phmetro) use ($filters) {
                 return strpos(strtolower($phmetro['macAddress']['nome']), strtolower($filters['localizacao'])) !== false;
             });
         }
     
+        // Validar latitude e longitude
+        $data = $data->map(function ($phmetro) {
+            $latitude = $phmetro['macAddress']['latitude'] ?? null;
+            $longitude = $phmetro['macAddress']['longitude'] ?? null;
+    
+            if (!is_numeric($latitude) || !is_numeric($longitude)) {
+                $phmetro['macAddress']['latitude'] = null;
+                $phmetro['macAddress']['longitude'] = null;
+
+                dd($phmetro['macAddress']['latitude']);
+            }
+    
+            return $phmetro;
+        });
+    
+        // Paginação
         $perPage = 10;
         $currentPage = $request->get('page', 1);
         $currentPageItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
@@ -59,11 +76,15 @@ class PhmetroController extends Controller {
             $currentPage,
             ['path' => $request->url(), 'query' => $request->query()]
         );
-
-        return view('phmetro.index', ['phmetros' => $paginatedData, 'filters' => $filters, 'localizacoes' => $localizacoes, 'escalas' => $escalas]);
-    }
     
-
+        return view('phmetro.index', [
+            'phmetros' => $paginatedData,
+            'filters' => $filters,
+            'localizacoes' => $localizacoes,
+            'escalas' => $escalas
+        ]);
+    }   
+    
     public function recarregar() {
         $data = $this->apiService->listarPhmetroEmJson();
         return response()->json($data);
