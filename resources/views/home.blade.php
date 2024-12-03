@@ -18,7 +18,7 @@
             <div class="col-md-4">
                 <a href="{{ route('registro.index') }}" class="text-decoration-none">
                     <div class="card card-hover">
-                        <img src="http://85.31.63.241:8083/assets/img/chicken.jpeg" class="card-img-top custom-img" alt="Smart-Harpia">
+                        <img src="https://png.pngtree.com/thumb_back/fh260/background/20220217/pngtree-organic-poultry-freerange-chickens-on-a-farm-in-germany-photo-image_35385422.jpg" class="card-img-top custom-img" alt="Smart-Harpia">
                         <div class="card-body text-center">
                             <h5 class="card-title custom-title">SMART ANILHAS</h5>
                             <p class="card-text custom-description">Sistema desenvolvido com objetivo de monitorar as aves!</p>

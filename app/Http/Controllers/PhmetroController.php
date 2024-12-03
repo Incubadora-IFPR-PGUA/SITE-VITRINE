@@ -15,7 +15,6 @@ class PhmetroController extends Controller {
         $this->apiService = $apiService;
     }
 
-
     public function index(Request $request) {
         $filters = $request->only(['ph', 'escala', 'data', 'localizacao']);
         $data = collect($this->apiService->listarPhmetroEmJson());
