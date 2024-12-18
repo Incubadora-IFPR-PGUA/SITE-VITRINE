@@ -18,6 +18,10 @@ class PhmetroController extends Controller {
     public function index(Request $request) {
         $filters = $request->only(['ph', 'escala', 'data', 'localizacao']);
         $data = collect($this->apiService->listarPhmetroEmJson());
+
+        $data = $data->sortByDesc(function ($phmetro) {
+            return Carbon::parse($phmetro['data_hora_atualizacao']);
+        });
     
         // Extrair localizações e escalas únicas
         $localizacoes = $data->pluck('macAddress.nome')->unique()->sort()->values();
