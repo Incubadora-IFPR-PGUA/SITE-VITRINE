@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnilhaPendenteController;
-use App\Http\Controllers\SmartHarpiaController;
+use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\PhmetroController;
 
 Route::get('/', function () {
@@ -18,20 +18,20 @@ Route::middleware('auth')->group(function () {
     //Colocar aqui depois as rotas que devem para ser acessadas estarem autenticado
 });
 
+// PHmetro
+Route::resource('phmetro', 'App\Http\Controllers\PhmetroController');
+Route::get('/phmetro', 'App\Http\Controllers\PhmetroController@index')->name('phmetro');
+Route::get('/recarregarDadosPhmetro', 'App\Http\Controllers\PhmetroController@recarregar');
+
 // MacAddress
-Route::resource('macaddress', 'App\Http\Controllers\SmartHarpiaController');
-Route::get('/macaddress', 'App\Http\Controllers\SmartHarpiaController@index')->name('macaddress');
-Route::get('/macaddressReload', 'App\Http\Controllers\SmartHarpiaController@macaddressReload');
+Route::resource('macaddress', 'App\Http\Controllers\MacAddressController');
+Route::get('/macaddress', 'App\Http\Controllers\MacAddressController@index')->name('macaddress');
+Route::get('/recarregarDadosMacAddress', 'App\Http\Controllers\MacAddressController@recarregar');
 
 // Horta
 Route::resource('horta', 'App\Http\Controllers\SmartHortaController');
 Route::get('/smarthorta', 'App\Http\Controllers\SmartHortaController@index')->name('smarthorta');
 Route::get('/recarregarDadosHorta', 'App\Http\Controllers\SmartHortaController@recarregar');
-
-// PHmetro
-Route::resource('phmetro', 'App\Http\Controllers\PhmetroController');
-Route::get('/phmetro', 'App\Http\Controllers\PhmetroController@index')->name('phmetro');
-Route::get('/recarregarDadosPhmetro', 'App\Http\Controllers\PhmetroController@recarregar');
 
 // Anilhas
 Route::get('/cadastroReload', 'App\Http\Controllers\AnilhaCadastroController@reload');

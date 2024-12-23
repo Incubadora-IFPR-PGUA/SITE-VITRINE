@@ -82,7 +82,7 @@ class ApiService {
     }
 
     // MAC API
-    public function getMacAddressInJson(){
+    public function listarMacAddressEmJson(){
         $response = Http::get("{$this->baseUrl}/listarMacsCapturados");
         return $response->json();
     }

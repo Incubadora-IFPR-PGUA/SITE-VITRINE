@@ -60,8 +60,6 @@ class PhmetroController extends Controller {
             if (!is_numeric($latitude) || !is_numeric($longitude)) {
                 $phmetro['macAddress']['latitude'] = null;
                 $phmetro['macAddress']['longitude'] = null;
-
-                dd($phmetro['macAddress']['latitude']);
             }
     
             return $phmetro;
