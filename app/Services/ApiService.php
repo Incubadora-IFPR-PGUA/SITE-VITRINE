@@ -64,15 +64,7 @@ class ApiService {
     // HORTA API
     public function listarHortaEmJson() {
         $response = Http::get("{$this->baseUrl}/listarHorta");
-        $dados = $response->json();
-        
-        if (isset($dados['data']) && is_array($dados['data'])) {
-            $dadosLimitados = array_slice($dados['data'], 0, 10);
-        } else {
-            $dadosLimitados = [];
-        }
-        
-        return $dadosLimitados;
+        return $dados = $response->json();
     }
 
     // Phmetro
