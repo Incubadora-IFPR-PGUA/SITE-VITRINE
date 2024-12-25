@@ -12,7 +12,7 @@ class ApiService {
     }
 
     // Anilhas Cadastradas
-    public function listarAnilhasCadastradas() {
+    public function listarAnilhasCadastradasEmJson() {
         $response = Http::get("{$this->baseUrl}/listarAnilhasCadastradasEntrada");
         return $response->json();
     }

@@ -18,6 +18,7 @@
 <body>
     <div class="container mt-5 d-flex justify-content-center align-items-center">
         <div class="w-100">
+            <!-- Filtros -->
             <form method="GET" action="{{ route('smarthorta') }}">
                 <div class="row mb-3">
                   <!-- Data -->

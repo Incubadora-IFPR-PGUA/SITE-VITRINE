@@ -33,16 +33,18 @@ Route::resource('horta', 'App\Http\Controllers\SmartHortaController');
 Route::get('/smarthorta', 'App\Http\Controllers\SmartHortaController@index')->name('smarthorta');
 Route::get('/recarregarDadosHorta', 'App\Http\Controllers\SmartHortaController@recarregar');
 
-// Anilhas
-Route::get('/cadastroReload', 'App\Http\Controllers\AnilhaCadastroController@reload');
+// Anilhas Cadastro
+Route::resource('cadastro', 'App\Http\Controllers\AnilhaCadastroController');
+Route::get('/cadastro', 'App\Http\Controllers\AnilhaCadastroController@index')->name('cadastro');
+Route::get('/recarregarDadosCadastroAnilhas', 'App\Http\Controllers\AnilhaCadastroController@recarregar');
+Route::delete('/cadastroDelete/{id}', 'App\Http\Controllers\AnilhaCadastroController@destroy');
+Route::put('/cadastroUpdate/{id}', 'App\Http\Controllers\AnilhaCadastroController@update');
+
 Route::get('/registroReload', 'App\Http\Controllers\AnilhaRegistroController@reload');
 Route::get('/pendenteReload', 'App\Http\Controllers\AnilhaPendenteController@reload');
-Route::resource('cadastro', 'App\Http\Controllers\AnilhaCadastroController');
 Route::resource('pendente', 'App\Http\Controllers\AnilhaPendenteController');
 Route::resource('registro', 'App\Http\Controllers\AnilhaRegistroController');
 Route::post('/aceitarPendente/{id}', 'App\Http\Controllers\AnilhaPendenteController@aceitarPendente');
 Route::delete('/pendenteDelete/{id}', 'App\Http\Controllers\AnilhaPendenteController@destroy');
-Route::delete('/cadastroDelete/{id}', 'App\Http\Controllers\AnilhaCadastroController@destroy');
-Route::put('/cadastroUpdate/{id}', 'App\Http\Controllers\AnilhaCadastroController@update');
 
 require __DIR__.'/auth.php';
