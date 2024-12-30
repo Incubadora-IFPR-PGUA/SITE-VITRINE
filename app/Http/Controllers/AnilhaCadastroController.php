@@ -73,8 +73,8 @@ class AnilhaCadastroController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        // $this->authorize('hasFullPermission', AnilhaCadastro::class);
         $data = $this->apiService->obterAnilhaCadastradaPorId($id);
+
         if (isset($data)) {
             $dadosAtualizacao = [
                 'name' => $request->input('name'),

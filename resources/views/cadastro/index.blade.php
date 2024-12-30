@@ -12,17 +12,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Anilhas Cadastradas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<!-- Tela de Carregamento -->
-<!-- <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255, 255, 255, 0.8); z-index:10000; display:flex; align-items:center; justify-content:center;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Carregando...</span>
-    </div>
-</div> -->
-
 <body>
+    <!-- Tela de Carregamento -->
+    <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255, 255, 255, 0.8); z-index:10000; display:flex; align-items:center; justify-content:center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Carregando...</span>
+        </div>
+    </div>
+
     <div class="container mt-5 d-flex justify-content-center align-items-center">
         <div class="w-100">
           <!-- Filtros -->
@@ -114,30 +114,36 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <p><strong>Última Modificação:</strong> {{ Carbon::parse($anilha['updated_at'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
+                                    <!-- Formulário para Atualização -->
                                     <form method="POST" action="{{ url('/cadastroUpdate/'.$anilha['id']) }}">
                                         @csrf
                                         @method('PUT')
-                                        <p><strong>Data:</strong> {{ Carbon::parse($anilha['created_at'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
                                         <div class="mb-3">
                                             <label for="nome{{ $loop->index }}" class="form-label"><strong>Nome:</strong></label>
-                                            <input type="text" name="nome" id="nome{{ $loop->index }}" class="form-control" value="{{ $anilha['nome'] }}" required>
+                                            <input type="text" name="name" id="nome{{ $loop->index }}" class="form-control" value="{{ $anilha['nome'] }}" required>
                                         </div>
                                         <p><strong>Número da Anilha:</strong> {{ $anilha['numero_anilha'] }}</p>
                                         <div class="modal-footer">
-                                            <!-- Formulário de Exclusão -->
-                                            <form method="POST" action="{{ url('/cadastroDelete/'.$anilha['id']) }}">
+                                            <!-- Botão Salvar -->
+                                            <form method="POST" action="{{ url('/cadastroUpdate/'.$anilha['id']) }}">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                            </form>
+
+                                            <!-- Botão Excluir -->
+                                            <form method="POST" action="{{ url('/cadastroDelete/'.$anilha['id']) }}" onsubmit="return confirm('Tem certeza que deseja excluir este registro?');" style="margin-left: 10px;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger mt-2">Deletar</button>
+                                                <button type="submit" class="btn btn-danger">Excluir</button>
                                             </form>
-                                            <button type="submit" class="btn btn-primary">Salvar</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 @endforeach
             </tbody>
           </table>
@@ -149,6 +155,25 @@
         </div>
     </div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const forms = document.querySelectorAll('form');
+
+        forms.forEach(form => {
+            form.addEventListener('submit', () => {
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'flex';
+                }
+            });
+        });
+
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 500);
+    });
+</script>
 
 </html>
 

@@ -49,7 +49,7 @@
                 <div class="nav-links">
                 @if(request()->routeIs('pendente.index') || request()->routeIs('cadastro.index') || request()->routeIs('registro.index'))
                     @can('hasFullPermission', App\Models\AnilhaCadastro::class)
-                    <x-nav-link :href="route('cadastro.index')" :active="request()->routeIs('cadastro.index')" class="nav-link">
+                    <x-nav-link :href="route('cadastro')" :active="request()->routeIs('cadastro')" class="nav-link">
                         {{ __('Cadastro') }}
                     </x-nav-link>
                     @endcan
@@ -84,8 +84,8 @@
 
                 <!-- Apagar depois isso -->
                 <div class="nav-links">
-                @if(request()->routeIs('pendente.index') || request()->routeIs('cadastro.index') || request()->routeIs('registro.index'))
-                    <x-nav-link :href="route('cadastro.index')" :active="request()->routeIs('cadastro.index')" class="nav-link">
+                @if(request()->routeIs('pendente.index') || request()->routeIs('cadastro') || request()->routeIs('registro.index'))
+                    <x-nav-link :href="route('cadastro')" :active="request()->routeIs('cadastro')" class="nav-link">
                         {{ __('Cadastro') }}
                     </x-nav-link>
                     <x-nav-link :href="route('pendente.index')" :active="request()->routeIs('pendente.index')" class="nav-link">

@@ -37,8 +37,8 @@ Route::get('/recarregarDadosHorta', 'App\Http\Controllers\SmartHortaController@r
 Route::resource('cadastro', 'App\Http\Controllers\AnilhaCadastroController');
 Route::get('/cadastro', 'App\Http\Controllers\AnilhaCadastroController@index')->name('cadastro');
 Route::get('/recarregarDadosCadastroAnilhas', 'App\Http\Controllers\AnilhaCadastroController@recarregar');
-Route::delete('/cadastroDelete/{id}', 'App\Http\Controllers\AnilhaCadastroController@destroy');
 Route::put('/cadastroUpdate/{id}', 'App\Http\Controllers\AnilhaCadastroController@update');
+Route::delete('/cadastroDelete/{id}', 'App\Http\Controllers\AnilhaCadastroController@destroy');
 
 Route::get('/registroReload', 'App\Http\Controllers\AnilhaRegistroController@reload');
 Route::get('/pendenteReload', 'App\Http\Controllers\AnilhaPendenteController@reload');
