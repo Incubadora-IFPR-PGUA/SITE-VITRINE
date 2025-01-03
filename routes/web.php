@@ -40,10 +40,13 @@ Route::get('/recarregarDadosCadastroAnilhas', 'App\Http\Controllers\AnilhaCadast
 Route::put('/cadastroUpdate/{id}', 'App\Http\Controllers\AnilhaCadastroController@update');
 Route::delete('/cadastroDelete/{id}', 'App\Http\Controllers\AnilhaCadastroController@destroy');
 
-Route::get('/registroReload', 'App\Http\Controllers\AnilhaRegistroController@reload');
+// Anilhas Registros
+Route::resource('registro', 'App\Http\Controllers\AnilhaRegistroController');
+Route::get('/registro', 'App\Http\Controllers\AnilhaRegistroController@index')->name('registro');
+Route::get('/recarregarDadosRegistroAnilhas', 'App\Http\Controllers\AnilhaRegistroController@recarregar');
+
 Route::get('/pendenteReload', 'App\Http\Controllers\AnilhaPendenteController@reload');
 Route::resource('pendente', 'App\Http\Controllers\AnilhaPendenteController');
-Route::resource('registro', 'App\Http\Controllers\AnilhaRegistroController');
 Route::post('/aceitarPendente/{id}', 'App\Http\Controllers\AnilhaPendenteController@aceitarPendente');
 Route::delete('/pendenteDelete/{id}', 'App\Http\Controllers\AnilhaPendenteController@destroy');
 
