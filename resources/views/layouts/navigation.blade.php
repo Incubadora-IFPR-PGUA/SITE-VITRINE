@@ -84,11 +84,11 @@
 
                 <!-- Apagar depois isso -->
                 <div class="nav-links">
-                    @if(request()->routeIs('pendente.index') || request()->routeIs('cadastro') || request()->routeIs('registro'))
+                    @if(request()->routeIs('pendente') || request()->routeIs('cadastro') || request()->routeIs('registro'))
                         <x-nav-link :href="route('cadastro')" :active="request()->routeIs('cadastro')" class="nav-link">
                             {{ __('Cadastro') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('pendente.index')" :active="request()->routeIs('pendente.index')" class="nav-link">
+                        <x-nav-link :href="route('pendente')" :active="request()->routeIs('pendente')" class="nav-link">
                             {{ __('Pendente') }}
                         </x-nav-link>
                         <x-nav-link :href="route('registro')" :active="request()->routeIs('registro')" class="nav-link">

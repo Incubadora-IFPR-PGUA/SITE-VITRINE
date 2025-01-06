@@ -45,8 +45,10 @@ Route::resource('registro', 'App\Http\Controllers\AnilhaRegistroController');
 Route::get('/registro', 'App\Http\Controllers\AnilhaRegistroController@index')->name('registro');
 Route::get('/recarregarDadosRegistroAnilhas', 'App\Http\Controllers\AnilhaRegistroController@recarregar');
 
-Route::get('/pendenteReload', 'App\Http\Controllers\AnilhaPendenteController@reload');
+// Anilhas Pendente
 Route::resource('pendente', 'App\Http\Controllers\AnilhaPendenteController');
+Route::get('/pendente', 'App\Http\Controllers\AnilhaPendenteController@index')->name('pendente');
+Route::get('/recarregarDadosPendenteAnilhas', 'App\Http\Controllers\AnilhaPendenteController@recarregar');
 Route::post('/aceitarPendente/{id}', 'App\Http\Controllers\AnilhaPendenteController@aceitarPendente');
 Route::delete('/pendenteDelete/{id}', 'App\Http\Controllers\AnilhaPendenteController@destroy');
 

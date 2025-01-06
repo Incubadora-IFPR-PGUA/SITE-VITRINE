@@ -40,7 +40,7 @@ class ApiService {
         return $response->json();
     }
 
-    public function listarAnilhasPendentes() {
+    public function listarAnilhasPendentesEmJson() {
         $response = Http::get("{$this->baseUrl}/listarAnilhasPendentes");
         return $response->json();
     }
