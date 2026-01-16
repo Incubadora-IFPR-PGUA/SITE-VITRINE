@@ -25,17 +25,15 @@ class GoogleClient {
     }
 
     public function authenticated() {
-        // if (isset($_GET['code'])) {
-        //     $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
-        //     $this->client->setAccessToken($token['access_token']);
-        //     $google_service = new ServiceOauth2($this->client);
-        //     $this->data = $google_service->userinfo->get();
+        if (isset($_GET['code'])) {
+            $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
+            $this->client->setAccessToken($token['access_token']);
+            $google_service = new ServiceOauth2($this->client);
+            $this->data = $google_service->userinfo->get();
 
-        //     return true;
-        // }
-        // return false;
-        header('Location: http://85.31.63.241:8084/home');
-        exit();
+            return true;
+        }
+        return false;
     }
 
     public function getData() {
