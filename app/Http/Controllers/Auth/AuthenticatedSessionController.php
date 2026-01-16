@@ -7,26 +7,30 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Library\GoogleClient;
 use App\Library\Authenticate;
-use App\Models\User;
-use App\Http\Controllers\PermissionController;
 use Socialite;
 
 class AuthenticatedSessionController extends Controller {
     public function create() {
-        // TEMPORÁRIO: Login automático - cria ou busca usuário padrão e faz login
-        $user = User::firstOrCreate(
-            ['email' => 'usuario@temp.com'],
-            [
-                'name' => 'Usuário Temporário',
-                'role_id' => 1, // Ajuste o role_id conforme necessário
-                'avatar' => null
-            ]
-        );
+        // TEMPORÁRIO: Login automático SEM BANCO DE DADOS - apenas usando sessão
+        // Cria um usuário fake temporário na sessão
+        Session::put('auth', true);
+        Session::put('user_id', 1);
+        Session::put('user_name', 'Usuário Temporário');
+        Session::put('user_email', 'usuario@temp.com');
+        Session::put('role_id', 1);
         
-        Auth::login($user);
-        PermissionController::loadPermissions($user->role_id);
+        // Carrega permissões padrão na sessão (sem depender do banco)
+        Session::put('user_permissions', [
+            'cadastro' => true,
+            'pendente' => true,
+            'registro' => true,
+            'phmetro' => true,
+            'macaddress' => true,
+            'horta' => true,
+        ]);
         
         return redirect()->route('home');
         
