@@ -96,6 +96,8 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 
+    .nav-chevron { font-size: 0.75rem; }
+
     .user-avatar {
         width: 2.5rem;
         height: 2.5rem;
@@ -205,19 +207,100 @@
             display: none;
         }
     }
+
+    /* Layout do navbar (substitui Tailwind) */
+    .navbar-professional .nav-container {
+        max-width: 80rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 1rem 1.5rem;
+    }
+    @media (min-width: 640px) {
+        .navbar-professional .nav-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+    @media (min-width: 1024px) {
+        .navbar-professional .nav-container { padding-left: 2rem; padding-right: 2rem; }
+    }
+    .navbar-professional .nav-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 5rem;
+    }
+    .navbar-professional .nav-brand,
+    .navbar-professional .nav-brand a {
+        display: flex;
+        align-items: center;
+    }
+    .navbar-professional .logo-container { flex-shrink: 0; }
+    .navbar-professional .nav-logo-text {
+        margin-left: 0.75rem;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.25rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: none;
+    }
+    @media (min-width: 640px) {
+        .navbar-professional .nav-logo-text { display: inline; }
+    }
+    .navbar-professional .nav-user-wrap {
+        display: none;
+        align-items: center;
+    }
+    @media (min-width: 640px) {
+        .navbar-professional .nav-user-wrap {
+            display: flex;
+            margin-left: 1.5rem;
+        }
+    }
+    .navbar-professional .nav-mobile-trigger {
+        display: flex;
+        align-items: center;
+    }
+    @media (min-width: 640px) {
+        .navbar-professional .nav-mobile-trigger { display: none; }
+    }
+    .navbar-professional .mobile-menu {
+        display: none;
+    }
+    .navbar-professional .mobile-menu.mobile-menu-open {
+        display: block;
+    }
+    @media (min-width: 640px) {
+        .navbar-professional .mobile-menu { display: none !important; }
+    }
+    .navbar-professional .mobile-menu .nav-spacing { padding-top: 0.5rem; padding-bottom: 0.75rem; }
+    .navbar-professional .mobile-menu .nav-spacing > * + * { margin-top: 0.25rem; }
+    .navbar-professional .mobile-menu .nav-divider {
+        padding-top: 1rem;
+        padding-bottom: 0.25rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    .navbar-professional .mobile-menu .nav-user-info {
+        display: flex;
+        align-items: center;
+        padding: 0 1rem 0.75rem;
+    }
+    .navbar-professional .mobile-menu .nav-user-info .nav-avatar-wrap { margin-left: 0.75rem; }
+    .navbar-professional .mobile-menu .nav-user-info .nav-user-name { font-weight: 500; font-size: 1rem; color: #1f2937; }
+    .navbar-professional .mobile-menu .nav-user-info .nav-user-email { font-weight: 500; font-size: 0.875rem; color: #6b7280; }
+    .navbar-professional .mobile-menu .nav-actions { margin-top: 0.75rem; }
+    .nav-icon-svg { width: 1.5rem; height: 1.5rem; display: block; }
+    [x-cloak] { display: none !important; }
 </style>
 
 <nav x-data="{ open: false }" class="navbar-professional">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
+    <div class="nav-container">
+        <div class="nav-row">
             <!-- Logo and Main Navigation -->
-            <div class="flex items-center">
+            <div class="nav-brand">
                 <!-- Logo -->
-                <div class="logo-container shrink-0">
-                    <a href="{{ route('home') }}" class="flex items-center">
+                <div class="logo-container">
+                    <a href="{{ route('home') }}">
                         <i class="fas fa-feather logo-icon"></i>
-                        <span class="ml-3 text-white font-bold text-xl hidden sm:block" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                        <span class="nav-logo-text">
                             Smart-Harpia
                         </span>
                     </a>
@@ -280,13 +363,13 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6 user-dropdown-container">
+            <div class="nav-user-wrap user-dropdown-container">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="user-dropdown-btn">
                             <img src="{{ asset('profile.jpeg') }}" alt="Avatar" class="user-avatar">
                             <span>Visitante</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
+                            <i class="fas fa-chevron-down nav-chevron"></i>
                         </button>
                     </x-slot>
 
@@ -316,11 +399,11 @@
             </div>
 
             <!-- Hamburger Menu Button -->
-            <div class="flex items-center sm:hidden">
-                <button @click="open = ! open" class="mobile-menu-btn">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <div class="nav-mobile-trigger">
+                <button type="button" @click="open = !open" class="mobile-menu-btn" aria-label="Menu">
+                    <svg class="nav-icon-svg" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :style="open ? { display: 'none' } : {}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :style="open ? {} : { display: 'none' }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -328,8 +411,8 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden mobile-menu">
-        <div class="pt-2 pb-3 space-y-1">
+    <div class="mobile-menu" :class="{'mobile-menu-open': open}">
+        <div class="nav-spacing">
             <a href="{{ route('home') }}" class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
                 <i class="fas fa-home"></i>
                 <span>{{ __('Perfil') }}</span>
@@ -377,16 +460,16 @@
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4 pb-3">
+        <div class="nav-divider">
+            <div class="nav-user-info">
                 <img src="{{ asset('profile.jpeg') }}" alt="Avatar" class="user-avatar">
-                <div class="ml-3">
-                    <div class="font-medium text-base text-gray-800">Visitante</div>
-                    <div class="font-medium text-sm text-gray-500">visitante@email.com</div>
+                <div class="nav-avatar-wrap">
+                    <div class="nav-user-name">Visitante</div>
+                    <div class="nav-user-email">visitante@email.com</div>
                 </div>
             </div>
 
-            <div class="mt-3 space-y-1">
+            <div class="nav-actions">
                 <a href="{{ route('home') }}" class="mobile-nav-link">
                     <i class="fas fa-user-circle"></i>
                     <span>{{ __('Perfil') }}</span>

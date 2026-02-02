@@ -1,43 +1,37 @@
 @props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white'])
 
 @php
-switch ($align) {
-    case 'left':
-        $alignmentClasses = 'origin-top-left left-0';
-        break;
-    case 'top':
-        $alignmentClasses = 'origin-top';
-        break;
-    case 'right':
-    default:
-        $alignmentClasses = 'origin-top-right right-0';
-        break;
-}
-
-switch ($width) {
-    case '48':
-        $width = 'w-48';
-        break;
-}
+$isRight = ($align === 'right');
+$widthRem = ($width === '48') ? '12rem' : '12rem';
 @endphp
 
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
+<div class="dropdown-wrap" x-data="{ open: false }" @click.outside="open = false">
+    <div @click="open = !open">
         {{ $trigger }}
     </div>
 
     <div x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="transform opacity-0 scale-95"
-            x-transition:enter-end="transform opacity-100 scale-100"
-            x-transition:leave="transition ease-in duration-75"
-            x-transition:leave-start="transform opacity-100 scale-100"
-            x-transition:leave-end="transform opacity-0 scale-95"
-            class="absolute z-[9999] mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
-            style="display: none;"
+            x-transition
+            class="dropdown-panel dropdown-align-{{ $align }}"
+            style="display: none; width: {{ $widthRem }}; margin-top: 0.5rem;"
             @click="open = false">
-        <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
+        <div class="dropdown-inner">
             {{ $content }}
         </div>
     </div>
 </div>
+
+<style>
+.dropdown-wrap { position: relative; display: inline-block; }
+.dropdown-panel {
+    position: absolute;
+    z-index: 9999;
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    transform-origin: top right;
+    top: 100%;
+    right: 0;
+}
+.dropdown-panel.dropdown-align-left { left: 0; right: auto; transform-origin: top left; }
+.dropdown-inner { border-radius: 0.375rem; }
+</style>
