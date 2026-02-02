@@ -19,12 +19,23 @@ class PhmetroController extends Controller {
         $filters = $request->only(['ph', 'escala', 'data', 'localizacao']);
         $data = collect($this->apiService->listarPhmetroEmJson());
 
+        // Garantir que todo phmetro tenha macAddress com as chaves esperadas
+        $data = $data->map(function ($phmetro) {
+            $phmetro['macAddress'] = array_merge([
+                'nome' => '',
+                'descricao' => '',
+                'latitude' => null,
+                'longitude' => null,
+            ], $phmetro['macAddress'] ?? []);
+            return $phmetro;
+        });
+
         $data = $data->sortByDesc(function ($phmetro) {
             return Carbon::parse($phmetro['data_hora_atualizacao']);
         });
     
         // Extrair localizações e escalas únicas
-        $localizacoes = $data->pluck('macAddress.nome')->unique()->sort()->values();
+        $localizacoes = $data->pluck('macAddress.nome')->filter()->unique()->sort()->values();
         $escalas = $data->pluck('escala')->unique()->sort()->values();
     
         // Aplicar filtros

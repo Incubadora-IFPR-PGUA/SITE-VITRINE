@@ -106,8 +106,8 @@
                                     >
                                         <td>{{ Carbon::parse($phmetro['data_hora_atualizacao'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</td>
                                         <td>{{ number_format(round($phmetro['ph'], 1), 1) }}</td>
-                                        <td>{{ $phmetro['escala']}}</td>
-                                        <td>{{ $phmetro['macAddress']['nome'] }}</td>
+                                        <td>{{ $phmetro['escala'] }}</td>
+                                        <td>{{ $phmetro['macAddress']['nome'] ?? '—' }}</td>
                                     </tr>
 
                                     <!-- Modal para Exibir Detalhes -->
@@ -122,17 +122,17 @@
                                                     <p><strong>Data:</strong> {{ Carbon::parse($phmetro['data_hora_atualizacao'])->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
                                                     <p><strong>Ph:</strong> {{ number_format(round($phmetro['ph'], 1), 1) }}</p>
                                                     <p><strong>Escala:</strong> {{ $phmetro['escala'] }}</p>
-                                                    <p><strong>ESP32:</strong> {{ $phmetro['macAddress']['nome'] }}</p>
-                                                    <p><strong>Descrição:</strong> {{ $phmetro['macAddress']['descricao'] }}</p>
+                                                    <p><strong>ESP32:</strong> {{ $phmetro['macAddress']['nome'] ?? '—' }}</p>
+                                                    <p><strong>Descrição:</strong> {{ $phmetro['macAddress']['descricao'] ?? '—' }}</p>
                                                     <strong>Localização:</strong>
-                                                    @if($phmetro['macAddress']['latitude'] && $phmetro['macAddress']['longitude'])
+                                                    @if(($phmetro['macAddress']['latitude'] ?? null) && ($phmetro['macAddress']['longitude'] ?? null))
                                                         <iframe 
                                                             class="form-control" 
                                                             id="mapFrame" 
                                                             width="100%" 
                                                             height="100%" 
                                                             style="border: 0;" 
-                                                            src="https://www.google.com/maps/embed/v1/view?key={{ env('GOOGLE_MAPS_API_KEY') }}&center={{ $phmetro['macAddress']['latitude'] }},{{ $phmetro['macAddress']['longitude'] }}&zoom=15" 
+                                                            src="https://www.google.com/maps/embed/v1/view?key={{ env('GOOGLE_MAPS_API_KEY') }}&center={{ $phmetro['macAddress']['latitude'] ?? 0 }},{{ $phmetro['macAddress']['longitude'] ?? 0 }}&zoom=15" 
                                                             allowfullscreen 
                                                             loading="lazy">
                                                         </iframe>

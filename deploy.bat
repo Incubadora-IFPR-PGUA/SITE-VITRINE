@@ -1,0 +1,3 @@
+@echo off
+echo Conectando-se ao servidor...
+ssh root@72.62.140.117 "cd .. && cd home && cd incubadoraifpr-sitevitrine && cd htdocs && cd sitevitrine.incubadoraifpr.com.br && git pull && npm run build"
