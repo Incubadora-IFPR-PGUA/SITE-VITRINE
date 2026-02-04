@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnilhaPendenteController;
+use App\Http\Controllers\GpsTartarugasController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\PhmetroController;
 
@@ -22,6 +23,11 @@ Route::middleware('auth')->group(function () {
 Route::resource('phmetro', 'App\Http\Controllers\PhmetroController');
 Route::get('/phmetro', 'App\Http\Controllers\PhmetroController@index')->name('phmetro');
 Route::get('/recarregarDadosPhmetro', 'App\Http\Controllers\PhmetroController@recarregar');
+
+// GPS Tartarugas
+Route::resource('gpstartarugas', GpsTartarugasController::class);
+Route::get('/gpstartarugas', [GpsTartarugasController::class, 'index'])->name('gpstartarugas');
+Route::get('/recarregarDadosGpsTartarugas', [GpsTartarugasController::class, 'recarregar']);
 
 // MacAddress
 Route::resource('macaddress', 'App\Http\Controllers\MacAddressController');
