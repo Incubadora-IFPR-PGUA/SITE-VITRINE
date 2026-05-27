@@ -6,9 +6,8 @@ export default [
   },
   {
     title: 'Mac Address',
+    to: { name: 'mac-address' },
     icon: { icon: 'tabler-network' },
-    disable: true,
-    badgeClass: 'bg-secondary',
   },
   {
     title: 'Smart Horta',
