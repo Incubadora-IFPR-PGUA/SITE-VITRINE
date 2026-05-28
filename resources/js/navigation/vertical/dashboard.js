@@ -10,6 +10,11 @@ export default [
     icon: { icon: 'tabler-network' },
   },
   {
+    title: 'Partículas do Ar',
+    to: { name: 'particulas-ar' },
+    icon: { icon: 'tabler-wind' },
+  },
+  {
     title: 'Smart Horta',
     icon: { icon: 'tabler-leaf' },
     disable: true,

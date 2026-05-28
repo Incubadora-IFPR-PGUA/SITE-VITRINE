@@ -13,6 +13,7 @@
   import svgLoader from 'vite-svg-loader'
 
 // Dev server restart
+
 export default defineConfig({
   server: {
     host: 'localhost',
