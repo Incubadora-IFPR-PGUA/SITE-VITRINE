@@ -6,6 +6,19 @@ const rawData = ref(null)
 const loading = ref(false)
 const error = ref(null)
 
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).format(date)
+}
+
 // Fetch Data
 const fetchData = async () => {
   loading.value = true
@@ -51,9 +64,38 @@ onMounted(() => {
             Erro ao conectar com a API: {{ error }}
           </VAlert>
 
-          <div v-else class="bg-var-theme-background rounded p-4 border" style="max-height: 500px; overflow-y: auto;">
-             <pre v-if="rawData" class="text-caption" style="white-space: pre-wrap;">{{ JSON.stringify(rawData, null, 2) }}</pre>
-             <div v-else class="text-center py-5 text-medium-emphasis">Nenhum dado recebido (null ou vazio).</div>
+          <div v-else class="rounded border">
+             <VTable v-if="rawData && rawData.length > 0" fixed-header height="500px">
+               <thead>
+                 <tr>
+                   <th class="text-left">ID</th>
+                   <th class="text-left">Data / Hora</th>
+                   <th class="text-left">PM2.5</th>
+                   <th class="text-left">Qualidade PM2.5</th>
+                   <th class="text-left">PM10</th>
+                   <th class="text-left">Qualidade PM10</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr v-for="item in rawData" :key="item.id">
+                   <td>{{ item.id }}</td>
+                   <td>{{ formatDate(item.createdAt) }}</td>
+                   <td>{{ Number(item.pm25).toFixed(2) }}</td>
+                   <td>
+                     <VChip :color="item.qualityPm25 === 'Boa' ? 'success' : (item.qualityPm25 === 'Moderada' ? 'warning' : 'error')" size="small">
+                       {{ item.qualityPm25 }}
+                     </VChip>
+                   </td>
+                   <td>{{ Number(item.pm10).toFixed(2) }}</td>
+                   <td>
+                     <VChip :color="item.qualityPm10 === 'Boa' ? 'success' : (item.qualityPm10 === 'Moderada' ? 'warning' : 'error')" size="small">
+                       {{ item.qualityPm10 }}
+                     </VChip>
+                   </td>
+                 </tr>
+               </tbody>
+             </VTable>
+             <div v-else class="text-center py-5 text-medium-emphasis">Nenhum dado recebido ou lista vazia.</div>
           </div>
         </VCardText>
       </VCard>
