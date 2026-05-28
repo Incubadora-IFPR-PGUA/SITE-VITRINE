@@ -11,7 +11,7 @@ const fetchData = async () => {
   loading.value = true
   error.value = null
   try {
-    const response = await axios.get('https://apiparticulas.incubadoraifpr.com.br/')
+    const response = await axios.get('https://apiparticula.incubadoraifpr.com.br/api/data')
     rawData.value = response.data
   } catch (err) {
     console.error('Erro ao buscar dados das partículas do ar:', err)
