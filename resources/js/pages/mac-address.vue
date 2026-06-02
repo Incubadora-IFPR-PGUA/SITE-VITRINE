@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import axios from 'axios'
+import VueApexCharts from 'vue3-apexcharts'
 
 const macData = ref([])
 const loading = ref(true)
@@ -190,6 +191,82 @@ const totalOnline = computed(() => groupedData.value.filter(i => i.status !== 's
 const totalOffline = computed(() => groupedData.value.filter(i => i.status !== 'saida' && getStatusObj(i).label !== 'Presente').length)
 const activeZonesCount = computed(() => availableZones.value.length - 1)
 
+const chartBarSeries = computed(() => {
+  const zonesCount = {}
+  groupedData.value.forEach(item => {
+    const zone = item.dispositivo || 'Não especificado'
+    zonesCount[zone] = (zonesCount[zone] || 0) + 1
+  })
+  return [{ name: 'Dispositivos', data: Object.values(zonesCount) }]
+})
+
+const chartBarOptions = computed(() => {
+  const zonesCount = {}
+  groupedData.value.forEach(item => {
+    const zone = item.dispositivo || 'Não especificado'
+    zonesCount[zone] = (zonesCount[zone] || 0) + 1
+  })
+  
+  return {
+    chart: { type: 'bar', toolbar: { show: false }, fontFamily: 'inherit' },
+    plotOptions: { bar: { borderRadius: 4, columnWidth: '45%', distributed: true } },
+    dataLabels: { enabled: false },
+    colors: ['#7367F0', '#00CFE8', '#28C76F', '#FF9F43', '#EA5455', '#FF4C51'],
+    xaxis: { 
+      categories: Object.keys(zonesCount),
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+    },
+    yaxis: {
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+    },
+    grid: { borderColor: 'rgba(var(--v-theme-on-surface), 0.12)' },
+    title: { text: 'Dispositivos por Zona', align: 'left', style: { color: 'rgba(var(--v-theme-on-surface), 0.8)', fontWeight: 600 } },
+    legend: { show: false }
+  }
+})
+
+const chartLineData = computed(() => {
+  const timeMap = {}
+  groupedData.value.forEach(item => {
+    if (!item.primeiraCaptura) return
+    const d = new Date(item.primeiraCaptura)
+    d.setMinutes(0, 0, 0)
+    const time = d.getTime()
+    timeMap[time] = (timeMap[time] || 0) + 1
+  })
+  
+  const sortedTimes = Object.keys(timeMap).sort().map(Number)
+  const categories = sortedTimes.map(t => {
+    const d = new Date(t)
+    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth()+1).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:00`
+  })
+  const data = sortedTimes.map(t => timeMap[t])
+  
+  return { categories, data }
+})
+
+const chartLineSeries = computed(() => {
+  return [{ name: 'Chegadas', data: chartLineData.value.data }]
+})
+
+const chartLineOptions = computed(() => {
+  return {
+    chart: { type: 'line', toolbar: { show: false }, fontFamily: 'inherit' },
+    stroke: { curve: 'smooth', width: 3 },
+    markers: { size: 6, strokeWidth: 2, strokeColors: 'rgb(var(--v-theme-surface))', colors: ['#00CFE8'], hover: { size: 8 } },
+    colors: ['#00CFE8'],
+    xaxis: { 
+      categories: chartLineData.value.categories,
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+    },
+    yaxis: {
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+    },
+    grid: { borderColor: 'rgba(var(--v-theme-on-surface), 0.12)' },
+    title: { text: 'Chegadas por Hora', align: 'left', style: { color: 'rgba(var(--v-theme-on-surface), 0.8)', fontWeight: 600 } }
+  }
+})
+
 const getDuration = (primeira, ultima) => {
   const diffMs = ultima - primeira
   if (diffMs < 60000) return 'Menos de 1m'
@@ -290,6 +367,20 @@ const formatDate = (dateString) => {
       <VCard class="glass-card text-center py-4 rounded-xl" elevation="0">
         <VCardTitle class="text-h4 font-weight-bold text-info">{{ activeZonesCount }}</VCardTitle>
         <VCardSubtitle>Zonas Ativas</VCardSubtitle>
+      </VCard>
+    </VCol>
+  </VRow>
+
+  <!-- Gráficos -->
+  <VRow class="mb-4">
+    <VCol cols="12" md="6">
+      <VCard class="rounded-xl glass-card pa-4" elevation="0">
+        <VueApexCharts type="bar" height="300" :options="chartBarOptions" :series="chartBarSeries" />
+      </VCard>
+    </VCol>
+    <VCol cols="12" md="6">
+      <VCard class="rounded-xl glass-card pa-4" elevation="0">
+        <VueApexCharts type="line" height="300" :options="chartLineOptions" :series="chartLineSeries" />
       </VCard>
     </VCol>
   </VRow>
