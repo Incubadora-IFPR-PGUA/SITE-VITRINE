@@ -191,40 +191,6 @@ const totalOnline = computed(() => groupedData.value.filter(i => i.status !== 's
 const totalOffline = computed(() => groupedData.value.filter(i => i.status !== 'saida' && getStatusObj(i).label !== 'Presente').length)
 const activeZonesCount = computed(() => availableZones.value.length - 1)
 
-const chartBarSeries = computed(() => {
-  const zonesCount = {}
-  groupedData.value.forEach(item => {
-    const zone = item.dispositivo || 'Não especificado'
-    zonesCount[zone] = (zonesCount[zone] || 0) + 1
-  })
-  return [{ name: 'Dispositivos', data: Object.values(zonesCount) }]
-})
-
-const chartBarOptions = computed(() => {
-  const zonesCount = {}
-  groupedData.value.forEach(item => {
-    const zone = item.dispositivo || 'Não especificado'
-    zonesCount[zone] = (zonesCount[zone] || 0) + 1
-  })
-  
-  return {
-    chart: { type: 'bar', toolbar: { show: false }, fontFamily: 'inherit' },
-    plotOptions: { bar: { borderRadius: 4, columnWidth: '45%', distributed: true } },
-    dataLabels: { enabled: false },
-    colors: ['#7367F0', '#00CFE8', '#28C76F', '#FF9F43', '#EA5455', '#FF4C51'],
-    xaxis: { 
-      categories: Object.keys(zonesCount),
-      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
-    },
-    yaxis: {
-      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
-    },
-    grid: { borderColor: 'rgba(var(--v-theme-on-surface), 0.12)' },
-    title: { text: 'Dispositivos por Zona', align: 'left', style: { color: 'rgba(var(--v-theme-on-surface), 0.8)', fontWeight: 600 } },
-    legend: { show: false }
-  }
-})
-
 const chartLineData = computed(() => {
   const timeMap = {}
   groupedData.value.forEach(item => {
@@ -238,32 +204,98 @@ const chartLineData = computed(() => {
   const sortedTimes = Object.keys(timeMap).sort().map(Number)
   const categories = sortedTimes.map(t => {
     const d = new Date(t)
-    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth()+1).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:00`
+    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth()+1).padStart(2, '0')}, ${String(d.getHours()).padStart(2, '0')}:00`
   })
   const data = sortedTimes.map(t => timeMap[t])
   
   return { categories, data }
 })
 
+const maxPico = computed(() => {
+  if (!chartLineData.value.data.length) return 0
+  return Math.max(...chartLineData.value.data)
+})
+
+const maxPicoTime = computed(() => {
+  if (!chartLineData.value.data.length) return ''
+  const index = chartLineData.value.data.indexOf(maxPico.value)
+  return chartLineData.value.categories[index]
+})
+
+const chartBarSeries = computed(() => {
+  return [{ name: 'Pico no frame', data: chartLineData.value.data }]
+})
+
+const chartBarOptions = computed(() => {
+  return {
+    chart: { type: 'bar', toolbar: { show: false }, fontFamily: 'inherit' },
+    plotOptions: { bar: { borderRadius: 2, columnWidth: '60%' } },
+    dataLabels: { enabled: false },
+    colors: ['#28C76F'],
+    xaxis: { 
+      categories: chartLineData.value.categories,
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.6)' }, rotate: -45, rotateAlways: true },
+      axisBorder: { show: false },
+      axisTicks: { show: false }
+    },
+    yaxis: {
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.6)' } }
+    },
+    grid: { 
+      borderColor: 'rgba(var(--v-theme-on-surface), 0.12)',
+      strokeDashArray: 4,
+      xaxis: { lines: { show: true } },
+      yaxis: { lines: { show: true } }
+    },
+    title: { 
+      text: `Pico no período: ${maxPico.value} pessoas no frame (${maxPicoTime.value})`, 
+      align: 'left', 
+      style: { color: 'rgba(var(--v-theme-on-surface), 0.9)', fontWeight: 600, fontSize: '16px' } 
+    },
+    legend: { show: true, position: 'bottom', labels: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' }, markers: { radius: 2 } }
+  }
+})
+
 const chartLineSeries = computed(() => {
-  return [{ name: 'Chegadas', data: chartLineData.value.data }]
+  return [{ name: 'Picos', data: chartLineData.value.data }]
 })
 
 const chartLineOptions = computed(() => {
   return {
-    chart: { type: 'line', toolbar: { show: false }, fontFamily: 'inherit' },
+    chart: { type: 'area', toolbar: { show: false }, fontFamily: 'inherit' },
     stroke: { curve: 'smooth', width: 3 },
-    markers: { size: 6, strokeWidth: 2, strokeColors: 'rgb(var(--v-theme-surface))', colors: ['#00CFE8'], hover: { size: 8 } },
-    colors: ['#00CFE8'],
+    fill: {
+      type: 'gradient',
+      gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] }
+    },
+    markers: { size: 5, strokeWidth: 2, strokeColors: '#7367F0', colors: ['#fff'], hover: { size: 7 } },
+    colors: ['#7367F0'],
     xaxis: { 
       categories: chartLineData.value.categories,
-      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.6)' }, rotate: -45, rotateAlways: true },
+      axisBorder: { show: false },
+      axisTicks: { show: false }
     },
     yaxis: {
-      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.8)' } }
+      labels: { style: { colors: 'rgba(var(--v-theme-on-surface), 0.6)' } }
     },
-    grid: { borderColor: 'rgba(var(--v-theme-on-surface), 0.12)' },
-    title: { text: 'Chegadas por Hora', align: 'left', style: { color: 'rgba(var(--v-theme-on-surface), 0.8)', fontWeight: 600 } }
+    grid: { 
+      borderColor: 'rgba(var(--v-theme-on-surface), 0.12)',
+      strokeDashArray: 4,
+      xaxis: { lines: { show: true } },
+      yaxis: { lines: { show: true } }
+    },
+    title: { 
+      text: 'Evolução de acessos por horários', 
+      align: 'left', 
+      style: { color: 'rgba(var(--v-theme-on-surface), 0.9)', fontWeight: 600, fontSize: '16px' } 
+    },
+    subtitle: {
+      text: 'Mesmo período e filtro das barras acima – série de picos de pessoas no frame por hora. Clique em um ponto para abrir as evidências daquele horário.',
+      align: 'left',
+      style: { color: 'rgba(var(--v-theme-on-surface), 0.6)', fontSize: '12px', fontWeight: 400 }
+    },
+    dataLabels: { enabled: false }
   }
 })
 
@@ -375,12 +407,12 @@ const formatDate = (dateString) => {
   <VRow class="mb-4">
     <VCol cols="12" md="6">
       <VCard class="rounded-xl glass-card pa-4" elevation="0">
-        <VueApexCharts type="bar" height="300" :options="chartBarOptions" :series="chartBarSeries" />
+        <VueApexCharts type="bar" height="350" :options="chartBarOptions" :series="chartBarSeries" />
       </VCard>
     </VCol>
     <VCol cols="12" md="6">
       <VCard class="rounded-xl glass-card pa-4" elevation="0">
-        <VueApexCharts type="line" height="300" :options="chartLineOptions" :series="chartLineSeries" />
+        <VueApexCharts type="area" height="350" :options="chartLineOptions" :series="chartLineSeries" />
       </VCard>
     </VCol>
   </VRow>
