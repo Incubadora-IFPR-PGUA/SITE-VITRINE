@@ -4,14 +4,14 @@ import { breakpointsVuetify } from '@vueuse/core'
 
 export const layoutConfig = {
   app: {
-    title: 'SMART-HARPIA',
+    title: 'VITRINE-INCUBADORA',
     logo: h('div', { style: 'display: flex; align-items: center; gap: 10px;' }, [
       h('img', { 
         src: logo, 
         alt: 'app-logo', 
         style: 'height: 40px; object-fit: contain;' 
       }),
-      h('span', { class: 'app-logo-title', style: 'color: #007bff; text-transform: uppercase; font-weight: bold; font-size: 1.05rem; letter-spacing: 0.5px;' }, 'SMART-HARPIA')
+      h('span', { class: 'app-logo-title', style: 'color: #007bff; text-transform: uppercase; font-weight: bold; font-size: 1.05rem; letter-spacing: 0.5px;' })
     ]),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,

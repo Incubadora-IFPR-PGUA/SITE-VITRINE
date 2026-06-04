@@ -26,7 +26,7 @@ const filteredData = computed(() => {
   }
 
   return rawData.value.filter(item => {
-    const itemDate = new Date(item.createdAt)
+    const itemDate = new Date(item.data_hora)
     return itemDate >= limitDate
   })
 })
@@ -49,10 +49,10 @@ const fetchData = async (isBackground = false) => {
   if (!isBackground) loading.value = true
   error.value = null
   try {
-    const response = await axios.get('https://apiparticula.incubadoraifpr.com.br/api/data')
+    const response = await axios.get('https://apijardimdechuva.incubadoraifpr.com.br/api/v1//leituras')
     rawData.value = response.data
   } catch (err) {
-    console.error('Erro ao buscar dados das partículas do ar:', err)
+    console.error('Erro ao buscar dados do jardim de chuva:', err)
     if (!isBackground) error.value = err.message || 'Erro desconhecido'
   } finally {
     if (!isBackground) loading.value = false
@@ -76,7 +76,7 @@ const chartOptions = computed(() => {
   if (!filteredData.value || filteredData.value.length === 0) return {}
 
   const dates = [...filteredData.value].reverse().map(item => {
-    const d = new Date(item.createdAt)
+    const d = new Date(item.data_hora)
     return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
   })
 
@@ -130,11 +130,15 @@ const chartSeries = computed(() => {
   return [
     {
       name: 'PM 2.5',
-      data: [...filteredData.value].reverse().map(item => Number(item.pm25).toFixed(2))
+      data: [...filteredData.value].reverse().map(item => {
+        return item.valor_json && item.valor_json.pm25 ? Number(item.valor_json.pm25).toFixed(2) : 0
+      })
     },
     {
       name: 'PM 10',
-      data: [...filteredData.value].reverse().map(item => Number(item.pm10).toFixed(2))
+      data: [...filteredData.value].reverse().map(item => {
+        return item.valor_json && item.valor_json.pm10 ? Number(item.valor_json.pm10).toFixed(2) : 0
+      })
     }
   ]
 })
@@ -145,8 +149,8 @@ const chartSeries = computed(() => {
     <VCol cols="12">
       <div class="d-flex align-center justify-space-between mb-4">
         <div>
-          <h2 class="text-2xl font-weight-bold">Partículas do Ar</h2>
-          <p class="text-medium-emphasis">Monitoramento de qualidade do ar em tempo real</p>
+          <h2 class="text-2xl font-weight-bold">Jardim de Chuva</h2>
+          <p class="text-medium-emphasis">Monitoramento em tempo real do Jardim de Chuva</p>
         </div>
         <VBtn color="primary" @click="fetchData(false)" :loading="loading" prepend-icon="tabler-refresh">
           Atualizar Dados
@@ -159,7 +163,7 @@ const chartSeries = computed(() => {
       <VCard>
         <VCardItem>
           <VCardTitle>Concentração de Partículas</VCardTitle>
-          <VCardSubtitle>Variação de PM2.5 e PM10 no ar</VCardSubtitle>
+          <VCardSubtitle>Variação de PM2.5 e PM10</VCardSubtitle>
           <template #append>
             <div style="width: 200px;">
               <VSelect
@@ -195,9 +199,9 @@ const chartSeries = computed(() => {
 
     <!-- Table Card -->
     <VCol cols="12">
-      <VCard title="Registros Detalhados" subtitle="Retorno da API apiparticulas.incubadoraifpr.com.br">
+      <VCard title="Registros Detalhados" subtitle="Retorno da API apijardimdechuva.incubadoraifpr.com.br">
         <VCardText>
-          <div v-if="loading && (!rawData || rawData.length === 0)" class="d-flex justify-center align-center py-10">
+          <div v-if="loading && (!filteredData || filteredData.length === 0)" class="d-flex justify-center align-center py-10">
             <VProgressCircular indeterminate color="primary"></VProgressCircular>
           </div>
           
@@ -209,28 +213,24 @@ const chartSeries = computed(() => {
              <VTable v-if="filteredData && filteredData.length > 0" fixed-header height="500px" hover>
                <thead>
                  <tr>
-                   <th class="text-left font-weight-bold text-uppercase">ID</th>
+                   <th class="text-left font-weight-bold text-uppercase">ID Leitura</th>
                    <th class="text-left font-weight-bold text-uppercase">Data / Hora</th>
                    <th class="text-left font-weight-bold text-uppercase">PM2.5</th>
-                   <th class="text-left font-weight-bold text-uppercase">Qualidade PM2.5</th>
                    <th class="text-left font-weight-bold text-uppercase">PM10</th>
-                   <th class="text-left font-weight-bold text-uppercase">Qualidade PM10</th>
                  </tr>
                </thead>
                <tbody>
-                 <tr v-for="item in filteredData" :key="item.id">
-                   <td>{{ item.id }}</td>
-                   <td>{{ formatDate(item.createdAt) }}</td>
-                   <td>{{ Number(item.pm25).toFixed(2) }}</td>
+                 <tr v-for="item in filteredData" :key="item.id_leitura">
+                   <td>{{ item.id_leitura }}</td>
+                   <td>{{ formatDate(item.data_hora) }}</td>
                    <td>
-                     <VChip :color="item.qualityPm25 === 'Boa' ? 'success' : (item.qualityPm25 === 'Moderada' ? 'warning' : 'error')" size="small" class="font-weight-medium">
-                       {{ item.qualityPm25 }}
+                     <VChip color="primary" size="small" variant="outlined" class="font-weight-medium">
+                       {{ item.valor_json && item.valor_json.pm25 ? Number(item.valor_json.pm25).toFixed(2) : '-' }}
                      </VChip>
                    </td>
-                   <td>{{ Number(item.pm10).toFixed(2) }}</td>
                    <td>
-                     <VChip :color="item.qualityPm10 === 'Boa' ? 'success' : (item.qualityPm10 === 'Moderada' ? 'warning' : 'error')" size="small" class="font-weight-medium">
-                       {{ item.qualityPm10 }}
+                     <VChip color="secondary" size="small" variant="outlined" class="font-weight-medium">
+                       {{ item.valor_json && item.valor_json.pm10 ? Number(item.valor_json.pm10).toFixed(2) : '-' }}
                      </VChip>
                    </td>
                  </tr>

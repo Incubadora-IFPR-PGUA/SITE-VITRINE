@@ -18,7 +18,14 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 5173,
-    strictPort: true
+    strictPort: true,
+    proxy: {
+      '/api-jardim': {
+        target: 'https://apijardimdechuva.incubadoraifpr.com.br',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-jardim/, '')
+      }
+    }
   },
   build: {
     outDir: 'public/build',
@@ -123,3 +130,5 @@ export default defineConfig({
     ],
   },
 })
+
+// Trigger Vite restart

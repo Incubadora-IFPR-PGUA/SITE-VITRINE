@@ -8,10 +8,10 @@ import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layo
 
 export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
-    title: 'SMART-HARPIA',
+    title: 'VITRINE-INCUBADORA',
     logo: h('div', { style: 'display: flex; align-items: center; gap: 10px;' }, [
-      h('img', { src: '/images/logo-smart.png', style: 'height: 40px; object-fit: contain' }),
-      h('span', { class: 'app-logo-title', style: 'color: #007bff; text-transform: uppercase;' }, 'SMART-HARPIA')
+      h('img', { src: '/images/logo-smart.png', style: 'height: 120px; width: 120px; object-fit: contain; flex-shrink: 0' }),
+      h('span', { class: 'app-logo-title', style: 'color: #007bff; text-transform: uppercase;' }, 'VITRINE-INCUBADORA')
     ]),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,

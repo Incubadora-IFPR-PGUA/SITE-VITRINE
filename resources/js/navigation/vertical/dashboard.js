@@ -15,6 +15,11 @@ export default [
     icon: { icon: 'tabler-wind' },
   },
   {
+    title: 'Jardim de Chuva',
+    to: { name: 'jardimdechuva' },
+    icon: { icon: 'tabler-cloud-rain' },
+  },
+  {
     title: 'Smart Horta',
     icon: { icon: 'tabler-leaf' },
     disable: true,

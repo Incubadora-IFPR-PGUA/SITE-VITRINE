@@ -182,7 +182,7 @@ watch(() => route.name, () => {
   }
 
   .app-title-wrapper {
-    margin-inline-end: auto;
+    margin-inline: auto;
   }
 
   .nav-items {
