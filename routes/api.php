@@ -8,6 +8,11 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
+Route::get('/proxy-jardim', function () {
+    $response = \Illuminate\Support\Facades\Http::withoutVerifying()->get('https://apijardimdechuva.incubadoraifpr.com.br/api/v1/leituras');
+    return $response->json();
+});
+
 // Rotas protegidas (exigem login via Sanctum)
 Route::middleware('auth:sanctum')->group(function () {
 

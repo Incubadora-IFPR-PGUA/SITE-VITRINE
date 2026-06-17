@@ -49,11 +49,8 @@ const fetchData = async (isBackground = false) => {
   if (!isBackground) loading.value = true
   error.value = null
   try {
-    // Usa o proxy do Vite em desenvolvimento e a URL direta em produção
-    const url = import.meta.env.DEV 
-      ? 'http://localhost:5173/api-jardim/api/v1/leituras' 
-      : 'https://apijardimdechuva.incubadoraifpr.com.br/api/v1/leituras'
-    const response = await axios.get(url)
+    // Usa o proxy criado no próprio Laravel (routes/api.php) para ignorar o erro SSL
+    const response = await axios.get('/api/proxy-jardim')
     rawData.value = response.data
   } catch (err) {
     console.error('Erro ao buscar dados do jardim de chuva:', err)
