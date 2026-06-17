@@ -23,6 +23,7 @@ export default defineConfig({
       '/api-jardim': {
         target: 'https://apijardimdechuva.incubadoraifpr.com.br',
         changeOrigin: true,
+        secure: false,
         rewrite: (path) => path.replace(/^\/api-jardim/, '')
       }
     }

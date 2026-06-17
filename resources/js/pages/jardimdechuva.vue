@@ -49,7 +49,11 @@ const fetchData = async (isBackground = false) => {
   if (!isBackground) loading.value = true
   error.value = null
   try {
-    const response = await axios.get('https://apijardimdechuva.incubadoraifpr.com.br/api/v1//leituras')
+    // Usa o proxy do Vite em desenvolvimento e a URL direta em produção
+    const url = import.meta.env.DEV 
+      ? 'http://localhost:5173/api-jardim/api/v1/leituras' 
+      : 'https://apijardimdechuva.incubadoraifpr.com.br/api/v1/leituras'
+    const response = await axios.get(url)
     rawData.value = response.data
   } catch (err) {
     console.error('Erro ao buscar dados do jardim de chuva:', err)
